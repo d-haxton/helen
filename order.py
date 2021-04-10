@@ -91,6 +91,9 @@ class Exchange:
         fill_msg_seller = fillMessage(sell_order.orderId, fill_id, fill_timestamp, fill_qty)
         ## Still need to send fill_msg out to traders !!!
         
+        buy_order.trader.fillRequest(fill_msg_buyer)
+        sell_order.trader.fillRequest(fill_msg_seller)
+
         if buy_order.qty == 0:
             loc_buyPrice = self.BuyPrices.index(buy_order.price)
             loc_order = self.orderBuys[loc_buyPrice].index(buy_order.orderId)
@@ -182,6 +185,10 @@ class Trader:
         cancel_feedback = exchange.orderCancel(orderId)
         print(cancel_feedback)
         self.cancel_hist[orderId] = cancel_feedback
+
+    def fillRequest(self, fillMessage):
+        new_orderId = msg_back.orderId
+        self.orderFillled[new_orderId] = msg_back
     
 
 
